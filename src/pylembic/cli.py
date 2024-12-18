@@ -6,6 +6,7 @@ app = typer.Typer(
     help="pylembic CLI for validating and visualizing Alembic migrations."
 )
 
+
 @app.command()
 def main(
     migrations_path: str = typer.Argument(..., help="Path to the migrations folder."),
@@ -39,6 +40,7 @@ def main(
 
     if not validate and not show_graph:
         typer.echo("No action specified. Use --help for more information.")
+
 
 if __name__ == "__main__":
     app()

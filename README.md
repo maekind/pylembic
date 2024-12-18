@@ -25,9 +25,9 @@ pip install pylembic
 
 ## Usage
 
-### pytest
+### Testing
 
-You can use this module with pytest as follows:
+You can use this module with your preferred testing framework as follows:
 
 ```python
 from os import path
@@ -54,20 +54,35 @@ def test_migrations(with_alembic_config_path):
 
 ### Visualizing the migration graph
 
-You can visualize the migration graph by running the following command:
+You can show the migrations graph by calling the method `show_graph`:
 
-```bash
+```python
+
 from os import path
 
 from pylembic.migrations import Validator
 
-alembic_config_path = path.abspath(
-    path.join(path.dirname(path.dirname(__file__)), "migrations")
-)
+alembic_config_path = path.abspath(path.join("your path", "migrations"))
 
 migration_validator = Validator(alembic_config_path)
 
-migration_validator.visualize_graph()
+migration_validator.show_graph()
 ```
+
+### Command line
+
+You can also use the command line for:
+
+- Validating migrations:
+
+    ```bash
+    pylembic ./path/to/migrations --validate
+    ```
+
+- Visualizing the migration graph:
+
+    ```bash
+    pylembic ./path/to/migrations --show-graph
+    ```
 
 (c) 2024, <a href="mailto:marco@marcoespinosa.com">Marco Espinosa</a>

@@ -13,6 +13,7 @@ dependencies = [
     "alembic>=1.14.0",
     "matplotlib>=3.10.0",
     "networkx>=3.4.2",
+    "typer>=0.15.1",
 ]
 
 [tool.uv]
@@ -26,6 +27,9 @@ dev-dependencies = [
 [tool.ruff]
 line-length = 88
 lint.select = ["E", "F", "W"]
+
+[project.scripts]
+pylembic = "pylembic.cli:app"
 
 [build-system]
 requires = ["hatchling"]

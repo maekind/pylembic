@@ -129,7 +129,7 @@ class Validator:
         # Perform validation checks within the graph
         return not (self._orphans() or self._multiple_bases_or_heads())
 
-    def visualize_graph(self) -> None:
+    def show_graph(self) -> None:
         """
         Visualizes the migration dependency graph.
         """
@@ -144,6 +144,9 @@ class Validator:
             node_color="lightblue",
             font_size=10,
             font_weight="bold",
+            label="Alembic Migration Graph",
         )
-        plt.title("Alembic Migration Dependency Graph")
+        # Set the custom window title
+        manager = plt.get_current_fig_manager()
+        manager.set_window_title("Alembic Migration Dependency Graph")
         plt.show()

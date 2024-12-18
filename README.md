@@ -1,3 +1,18 @@
+<!-- Shields -->
+<p align="center">
+<a href="https://github.com/maekind/pylembic"><img src="https://img.shields.io/github/actions/workflow/status/maekind/pylembic/.github%2Fworkflows%2Ftesting.yml?label=tests&color=green" hspace="5"></a>
+<a href="https://codecov.io/gh/maekind/pylembic"><img src="https://codecov.io/gh/maekind/pylembic/graph/badge.svg?token=JcGna50uJL" hspace="5"/>
+ </a>
+<a href="https://github.com/maekind/pylembic/releases"><img src="https://img.shields.io/github/actions/workflow/status/maekind/pylembic/.github%2Fworkflows%2Frelease.yml?label=package&color=green" hspace="5"></a>
+<a href="https://pypi.org/project/kairo"><img src="https://img.shields.io/github/v/release/maekind/pylembic?color=blue&label=pypi latest" hspace="5"></a>
+<br>
+<a href="https://github.com/maekind/kairo/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-orange.svg" hspace="5"></a>
+<a href="https://github.com/maekind/kairo"><img src="https://img.shields.io/github/repo-size/maekind/pylembic?color=red" hspace="5"></a>
+<a href="https://github.com/maekind/pylembic"><img src="https://img.shields.io/github/last-commit/maekind/pylembic?color=black" hspace="5"></a>
+<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/github/languages/top/maekind/pylembic?color=darkgreen" hspace="5"></a>
+<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python%20version-%3E3.11-lightblue" hspace="5"></a>
+</p>
+
 # pylembic
 
 ## Description

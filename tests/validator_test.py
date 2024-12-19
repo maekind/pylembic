@@ -21,7 +21,7 @@ def test_validate_alembic_migrations_checking_branches(with_migrations_path, cap
     validator = Validator(alembic_config_path=with_migrations_path)
 
     # when
-    result = validator.validate(verbose=True, branching=True)
+    result = validator.validate(verbose=True, detect_branches=True)
 
     # then
     assert not result, "Validation should fail due to branching"

@@ -145,7 +145,7 @@ class Validator:
 
         return branches
 
-    def validate(self, branching: bool = False, verbose: bool = False) -> bool:
+    def validate(self, detect_branches: bool = False, verbose: bool = False) -> bool:
         """This method validates the Alembic migrations for linearity and missing nodes.
 
         Args:
@@ -159,7 +159,7 @@ class Validator:
         logger = configure_logger(verbose)  # noqa F841
 
         # Check for branching migrations
-        branches = self._branches() if branching else False
+        branches = self._branches() if detect_branches else False
 
         # Perform validation checks within the graph
         return not (self._orphans() or self._multiple_bases_or_heads() or branches)

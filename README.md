@@ -92,13 +92,33 @@ You can also use the command line for:
 - Validating migrations:
 
     ```bash
-    pylembic ./path/to/migrations --validate
+    pylembic ./path/to/migrations validate
+    ```
+
+- Validating migrations with branch detection:
+
+    ```bash
+    pylembic ./path/to/migrations validate --detect-branches
     ```
 
 - Visualizing the migration graph:
 
     ```bash
-    pylembic ./path/to/migrations --show-graph
+    pylembic ./path/to/migrations show-graph
+    ```
+
+CLI is implemented using `typer`, so you can use the `--help` flag to get more information about the available options in every command.
+
+- Show general help:
+
+    ```bash
+    pylembic --help
+    ```
+
+- Show help for a specific command:
+
+    ```bash
+    pylembic validate --help
     ```
 
 #### Caveats

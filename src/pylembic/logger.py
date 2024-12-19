@@ -3,7 +3,7 @@ import logging
 from pylembic.formatter import CustomFormatter
 
 
-def configure_logger(verbose: bool = False):
+def configure_logger(verbose: bool = False) -> logging.Logger:
     """Configure the logger with a custom formatter and verbosity level.
 
     Args:
@@ -12,10 +12,14 @@ def configure_logger(verbose: bool = False):
     Returns:
         logging.Logger: The configured logger.
     """
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
+
+    # Avoid adding multiple handlers
+    if logger.hasHandlers():
+        logger.handlers.clear()
 
     if not verbose:
-        logger.setLevel(logging.CRITICAL + 1)
+        logger.setLevel(logging.CRITICAL + 1)  # Effectively disables logging
         return logger
 
     logger.setLevel(logging.INFO)
@@ -27,4 +31,5 @@ def configure_logger(verbose: bool = False):
     )
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
     return logger

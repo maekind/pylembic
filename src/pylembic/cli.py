@@ -42,7 +42,7 @@ def validate(
     validator = Validator(migrations_path)
 
     typer.echo("Validating migrations...")
-    if validator.validate(detect_branches=detect_branches):
+    if validator.validate(detect_branches=detect_branches, verbose=verbose):
         typer.secho("Migrations validation passed!", fg=typer.colors.GREEN)
     else:
         typer.secho("Migrations validation failed!", fg=typer.colors.RED)

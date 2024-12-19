@@ -20,6 +20,7 @@ def cleanup_migration_006(with_migrations_path):
     with open(orphan_migration_file, "w") as f:
         f.write(
             """\"\"\"head migration\"\"\"
+
 revision = "006"
 down_revision = "005"
 branch_labels = None
@@ -34,6 +35,7 @@ def with_orphan_migration(with_migrations_path):
     with open(orphan_migration_file, "w") as f:
         f.write(
             """\"\"\"orphan migration\"\"\"
+
 revision = "006"
 down_revision = None  # Orphan migration
 branch_labels = None
@@ -53,6 +55,7 @@ def with_multiple_bases_or_heads_migration(with_migrations_path):
     with open(orphan_migration_file, "w") as f:
         f.write(
             """\"\"\"orphan migration\"\"\"
+
 revision = "006"
 down_revision = "004"  # Multiple heads
 branch_labels = None

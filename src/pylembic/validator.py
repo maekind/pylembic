@@ -156,6 +156,7 @@ class Validator:
             bool: True if the migrations are valid.
         """
         # Reconfigure the logger verbosity
+        global logger
         logger = configure_logger(verbose)  # noqa F841
 
         # Check for branching migrations

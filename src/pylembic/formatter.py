@@ -4,7 +4,15 @@ from logging import Formatter
 class CustomFormatter(Formatter):
     """Custom formatter that handles missing fields gracefully."""
 
-    params = ["orphans", "dependency", "migration", "heads", "bases"]
+    params = [
+        "bases",
+        "dependency",
+        "down_revisions",
+        "heads",
+        "migration",
+        "orphans",
+        "up_revisions",
+    ]
 
     def format(self, record):
         """Format the log record with default values for missing fields."""

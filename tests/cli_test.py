@@ -30,7 +30,7 @@ def invalid_migrations_path(tmp_path):
 def test_validate_valid_migrations(valid_migrations_path, mocker):
     """Test --validate with valid migrations."""
     mock_validate = mocker.patch(
-        "pylembic.migrations.Validator.validate", return_value=True
+        "pylembic.validator.Validator.validate", return_value=True
     )
 
     result = runner.invoke(app, [valid_migrations_path, "--validate"])
@@ -41,10 +41,42 @@ def test_validate_valid_migrations(valid_migrations_path, mocker):
     mock_validate.assert_called_once()
 
 
+def test_validate_verbose(valid_migrations_path, mocker):
+    """Test --validate with verbose logging."""
+    mock_validate = mocker.patch(
+        "pylembic.validator.Validator.validate", return_value=True
+    )
+
+    result = runner.invoke(app, [valid_migrations_path, "--validate", "--verbose"])
+
+    assert result.exit_code == 0
+    assert "Validating migrations..." in result.output
+    assert "Verbose mode enabled." in result.output
+    assert "Migrations validation passed!" in result.output
+    mock_validate.assert_called_once()
+
+
+def test_validate_check_branching(valid_migrations_path, mocker):
+    """Test --validate with branching migrations."""
+    mock_validate = mocker.patch(
+        "pylembic.validator.Validator.validate", return_value=False
+    )
+
+    result = runner.invoke(
+        app, [valid_migrations_path, "--validate", "--check-branching"]
+    )
+
+    assert result.exit_code == 0
+    assert "Validating migrations..." in result.output
+    assert "Check for branching migrations enabled." in result.output
+    assert "Migrations validation failed!" in result.output
+    mock_validate.assert_called_once()
+
+
 def test_validate_invalid_migrations(invalid_migrations_path, mocker):
     """Test --validate with invalid migrations."""
     mock_validate = mocker.patch(
-        "pylembic.migrations.Validator.validate", return_value=False
+        "pylembic.validator.Validator.validate", return_value=False
     )
 
     result = runner.invoke(app, [invalid_migrations_path, "--validate"])
@@ -57,7 +89,7 @@ def test_validate_invalid_migrations(invalid_migrations_path, mocker):
 
 def test_show_graph(valid_migrations_path, mocker):
     """Test --show-graph to visualize the graph."""
-    mock_visualize = mocker.patch("pylembic.migrations.Validator.show_graph")
+    mock_visualize = mocker.patch("pylembic.validator.Validator.show_graph")
 
     result = runner.invoke(app, [valid_migrations_path, "--show-graph"])
 

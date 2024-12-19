@@ -1,6 +1,6 @@
 import typer
 
-from pylembic.migrations import Validator
+from pylembic.validator import Validator
 
 app = typer.Typer(
     help="pylembic CLI for validating and visualizing Alembic migrations."
@@ -9,7 +9,9 @@ app = typer.Typer(
 
 @app.command()
 def main(
-    migrations_path: str = typer.Argument(..., help="Path to the migrations folder."),
+    migrations_path: str = typer.Argument(
+        default="migrations", help="Path to the migrations folder."
+    ),
     validate: bool = typer.Option(False, "--validate", help="Validate the migrations."),
     show_graph: bool = typer.Option(
         False, "--show-graph", help="Visualize the migration dependency graph."
@@ -17,19 +19,26 @@ def main(
     verbose: bool = typer.Option(
         False, "--verbose", help="Show migrations validation logs."
     ),
+    check_branching: bool = typer.Option(
+        False, "--check-branching", help="Include branching in the validation."
+    ),
 ):
     """
     Main command to validate and/or visualize migrations.
     """
-    typer.echo(f"Processing migrations in: {migrations_path}")
-    validator = Validator(migrations_path)
-
     if verbose:
         typer.echo("Verbose mode enabled.")
 
+    if check_branching:
+        typer.echo("Check for branching migrations enabled.")
+
+    typer.echo(f"Processing migrations in: {migrations_path}")
+    validator = Validator(migrations_path)
+
     if validate:
         typer.echo("Validating migrations...")
-        if validator.validate():
+
+        if validator.validate(branching=check_branching):
             typer.secho("Migrations validation passed!", fg=typer.colors.GREEN)
         else:
             typer.secho("Migrations validation failed!", fg=typer.colors.RED)

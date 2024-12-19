@@ -1,7 +1,7 @@
 from pytest import raises
 
 from pylembic.exceptions import CircularDependencyError
-from pylembic.migrations import Validator
+from pylembic.validator import Validator
 
 
 def test_validate_alembic_migrations(with_migrations_path):
@@ -14,6 +14,21 @@ def test_validate_alembic_migrations(with_migrations_path):
     # then
     assert result, "Validation should pass"
     assert len(validator.graph.nodes) == 6, "Graph should contain all 6 revisions"
+
+
+def test_validate_alembic_migrations_checking_branches(with_migrations_path, caplog):
+    # given
+    validator = Validator(alembic_config_path=with_migrations_path)
+
+    # when
+    result = validator.validate(verbose=True, branching=True)
+
+    # then
+    assert not result, "Validation should fail due to branching"
+    branches_log = [
+        record for record in caplog.records if "Branching" in record.message
+    ]
+    assert len(branches_log) == 2, "Branching migrations should be detected"
 
 
 def test_orphan_migration_detection(

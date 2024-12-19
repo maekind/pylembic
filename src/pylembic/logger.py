@@ -22,7 +22,7 @@ def configure_logger(verbose: bool = False):
     handler = logging.StreamHandler()
     formatter = CustomFormatter(
         "%(levelname)s\t %(asctime)s | %(message)s | %(migration)s"
-        "%(dependency)s%(orphans)s%(heads)s%(bases)s",
+        "%(dependency)s%(orphans)s%(heads)s%(bases)s%(up_revisions)s%(down_revisions)s",
         datefmt="%d %b %Y | %H:%M:%S",
     )
     handler.setFormatter(formatter)

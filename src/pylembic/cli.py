@@ -1,45 +1,62 @@
 import typer
 
-from pylembic.migrations import Validator
+from pylembic.validator import Validator
 
 app = typer.Typer(
-    help="pylembic CLI for validating and visualizing Alembic migrations."
+    help="pylembic CLI for validating and visualizing Alembic migrations.",
 )
 
 
 @app.command()
-def main(
-    migrations_path: str = typer.Argument(..., help="Path to the migrations folder."),
-    validate: bool = typer.Option(False, "--validate", help="Validate the migrations."),
-    show_graph: bool = typer.Option(
-        False, "--show-graph", help="Visualize the migration dependency graph."
+def validate(
+    migrations_path: str = typer.Argument(
+        default="migrations", help="Path to the migrations folder."
     ),
     verbose: bool = typer.Option(
         False, "--verbose", help="Show migrations validation logs."
     ),
+    detect_branches: bool = typer.Option(
+        False,
+        "--detect-branches",
+        help=(
+            "Enable detection of branching migrations. "
+            "If branching migrations are detected, the validation will fail."
+        ),
+    ),
 ):
     """
-    Main command to validate and/or visualize migrations.
+    Validate the migrations in the specified path.
+    """
+    if verbose:
+        typer.echo("Verbose mode enabled.")
+
+    if detect_branches:
+        typer.echo("Detecting for branching migrations enabled.")
+
+    typer.echo(f"Processing migrations in: {migrations_path}")
+    validator = Validator(migrations_path)
+
+    typer.echo("Validating migrations...")
+    if validator.validate(detect_branches=detect_branches, verbose=verbose):
+        typer.secho("Migrations validation passed!", fg=typer.colors.GREEN)
+    else:
+        typer.secho("Migrations validation failed!", fg=typer.colors.RED)
+
+
+@app.command()
+def show_graph(
+    migrations_path: str = typer.Argument(
+        default="migrations", help="Path to the migrations folder."
+    ),
+):
+    """
+    Visualize the migration dependency graph.
     """
     typer.echo(f"Processing migrations in: {migrations_path}")
     validator = Validator(migrations_path)
 
-    if verbose:
-        typer.echo("Verbose mode enabled.")
-
-    if validate:
-        typer.echo("Validating migrations...")
-        if validator.validate():
-            typer.secho("Migrations validation passed!", fg=typer.colors.GREEN)
-        else:
-            typer.secho("Migrations validation failed!", fg=typer.colors.RED)
-
-    if show_graph:
-        typer.echo("Visualizing migration graph...")
-        validator.show_graph()
-
-    if not validate and not show_graph:
-        typer.echo("No action specified. Use --help for more information.")
+    typer.echo("Visualizing migration graph...")
+    validator.show_graph()
 
 
 if __name__ == "__main__":

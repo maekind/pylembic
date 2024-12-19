@@ -102,8 +102,8 @@ def test_no_action():
     """Test when no action is specified."""
     result = runner.invoke(app)
 
-    assert result.exit_code == 0
-    assert "No command specified. Use --help for more information." in result.output
+    assert result.exit_code != 0
+    assert "Missing command" in result.output
 
 
 def test_no_action_with_migrations(valid_migrations_path):

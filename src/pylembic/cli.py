@@ -4,17 +4,7 @@ from pylembic.validator import Validator
 
 app = typer.Typer(
     help="pylembic CLI for validating and visualizing Alembic migrations.",
-    invoke_without_command=True,
 )
-
-
-@app.callback()
-def main(ctx: typer.Context):
-    """
-    Entry point for the CLI tool.
-    """
-    if not ctx.invoked_subcommand:
-        typer.echo("No command specified. Use --help for more information.")
 
 
 @app.command()
@@ -26,7 +16,12 @@ def validate(
         False, "--verbose", help="Show migrations validation logs."
     ),
     detect_branches: bool = typer.Option(
-        False, "--detect-branches", help="Include branching in the validation."
+        False,
+        "--detect-branches",
+        help=(
+            "Enable detection of branching migrations. "
+            "If branching migrations are detected, the validation will fail."
+        ),
     ),
 ):
     """

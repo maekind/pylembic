@@ -26,6 +26,7 @@ class Validator:
         - Disconnected leaves: Flags migrations that are improperly disconnected from
         subsequent migrations.
         - Multiple roots/heads: Warns about unintentional forks or branching.
+        - Branching: Identifies migrations that have multiple parents or children.
         - Graph visualization: Provides a visual way to catch anomalies and understand
         migration flow.
     """

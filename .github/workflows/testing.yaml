@@ -5,13 +5,16 @@ on:
 
 jobs:
   testing:
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
     name: Python Testing and Coverage
     runs-on: ubuntu-latest
     steps:
       - name: Run Python Tests
         uses: maekind/github-actions/.github/actions/python-testing-and-coverage@main
         with:
-          python_version: "3.11"
+          python_version: ${{ matrix.python-version }}
           coverage_path: "./src"
 
   upload-coverage:

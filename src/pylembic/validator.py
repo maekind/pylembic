@@ -1,4 +1,4 @@
-import os
+from os import path
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -35,12 +35,11 @@ class Validator:
     def __init__(
         self, alembic_config_path: str, alembic_config_file: str = None
     ) -> None:
-        if not os.path.exists(alembic_config_path):
+        if not path.exists(alembic_config_path):
             raise FileNotFoundError(f"Path '{alembic_config_path}' does not exist!")
 
         self.alembic_config_path = alembic_config_path
         self.alembic_config_file = alembic_config_file or self.ALEMBIC_CONFIG_FILE
-        self.graph = nx.DiGraph()
         self.verbose = False
         self.script: ScriptDirectory = None
 
@@ -48,12 +47,12 @@ class Validator:
         self._load_alembic_config()
 
         # Build the migration graph
-        self._build_graph()
+        self.graph = self._build_graph()
 
     def _load_alembic_config(self) -> None:
         """Loads the Alembic configuration file and initializes the script directory."""
         alembic_config = Config(
-            os.path.join(self.alembic_config_path, self.alembic_config_file)
+            path.join(self.alembic_config_path, self.alembic_config_file)
         )
         alembic_config.set_main_option("script_location", self.alembic_config_path)
         self.script = ScriptDirectory.from_config(alembic_config)
@@ -74,7 +73,7 @@ class Validator:
         except CommandError as exc:
             raise CircularDependencyError(str(exc)) from exc
 
-        self.graph = graph
+        return graph
 
     def _orphans(self) -> bool:
         """
@@ -89,7 +88,7 @@ class Validator:
         heads = set(self.script.get_heads())
         orphans = bases.intersection(heads)
         if orphans:
-            logger.warning("Orphan migrations detected.", extra={"orphans": orphans})
+            logger.error("Orphan migrations detected.", extra={"orphans": orphans})
             return True
 
         logger.info("No orphan migrations detected.")
@@ -104,30 +103,67 @@ class Validator:
         """
         bases = set(self.script.get_bases())
         if len(bases) > 1:
-            logger.info("Multiple bases detected", extra={"bases": bases})
+            logger.error("Multiple bases detected", extra={"bases": bases})
             return True
 
         heads = set(self.script.get_heads())
         if len(heads) > 1:
-            logger.info("Multiple heads detected", extra={"heads": heads})
+            logger.error("Multiple heads detected", extra={"heads": heads})
             return True
+
+        logger.info("No multiple bases or heads detected.")
 
         return False
 
-    def validate(self, verbose: bool = False) -> bool:
+    def _branches(self) -> bool:
+        """
+        Checks for branching migrations in the Alembic script directory.
+
+        Returns:
+            bool: True if branching migrations are found.
+        """
+        branches = False
+        for node in self.graph.nodes:
+            if self.graph.out_degree(node) > 1:
+                branches = True
+                logger.error(
+                    "Branching migration detected.",
+                    extra={
+                        "migration": node,
+                        "down_revisions": list(self.graph.successors(node)),
+                    },
+                )
+            if self.graph.in_degree(node) > 1:
+                branches = True
+                logger.error(
+                    "Branching migration detected.",
+                    extra={
+                        "migration": node,
+                        "up_revisions": list(self.graph.predecessors(node)),
+                    },
+                )
+
+        return branches
+
+    def validate(self, detect_branches: bool = False, verbose: bool = False) -> bool:
         """This method validates the Alembic migrations for linearity and missing nodes.
 
         Args:
+            branching (bool): If True, checks for branching migrations.
             verbose (bool): If True, the logger verbosity is increased.
 
         Returns:
             bool: True if the migrations are valid.
         """
         # Reconfigure the logger verbosity
+        global logger
         logger = configure_logger(verbose)  # noqa F841
 
+        # Check for branching migrations
+        branches = self._branches() if detect_branches else False
+
         # Perform validation checks within the graph
-        return not (self._orphans() or self._multiple_bases_or_heads())
+        return not (self._orphans() or self._multiple_bases_or_heads() or branches)
 
     def show_graph(self) -> None:
         """

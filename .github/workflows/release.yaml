@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       new_version: ${{ steps.bump-version-step.outputs.new_version }}
-    if: false
     # Ignore version bump commits to avoid a loop
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     permissions:

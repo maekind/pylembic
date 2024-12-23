@@ -143,6 +143,9 @@ class Validator:
                     },
                 )
 
+        if not branches:
+            logger.info("No branching migrations detected.")
+
         return branches
 
     def validate(self, detect_branches: bool = False, verbose: bool = False) -> bool:

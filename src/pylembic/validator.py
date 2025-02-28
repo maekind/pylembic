@@ -50,6 +50,11 @@ class Validator:
         # Build the migration graph
         self.graph = self._build_graph()
 
+    @property
+    def migrations_count(self) -> int:
+        """Returns the total number of migrations."""
+        return len(list(self.script.walk_revisions()))
+
     def _load_alembic_config(self) -> None:
         """Loads the Alembic configuration file and initializes the script directory."""
         alembic_config = Config(
@@ -81,10 +86,15 @@ class Validator:
         Checks for orphan migrations in the Alembic script directory.
         As the orphan migrations are not connected to the migration graph, they are
         considered as a valid base and head.
+        If the migration graph has only one migration, it is skipped.
 
         Returns:
             bool: True if orphan migrations are found.
         """
+        if self.migrations_count == 1:
+            logger.info("Only one migration detected. Skipping orphan check.")
+            return False
+
         bases = set(self.script.get_bases())
         heads = set(self.script.get_heads())
         orphans = bases.intersection(heads)

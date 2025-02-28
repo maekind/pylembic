@@ -4,6 +4,11 @@ from pytest import fixture
 
 
 @fixture
+def with_one_migration_path():
+    return path.join(path.dirname(path.abspath(__file__)), "fixtures", "one_migration")
+
+
+@fixture
 def with_migrations_path():
     return path.join(path.dirname(path.abspath(__file__)), "fixtures", "migrations")
 

@@ -76,3 +76,16 @@ def test_circular_dependencies(with_circular_migrations_path):
 
     # then
     assert "Cycle is detected" in str(exc_info.value), "Cycle should be detected"
+
+
+def test_one_migration__no_orphans_check(with_one_migration_path, caplog):
+    # given
+    validator = Validator(alembic_config_path=with_one_migration_path)
+
+    # when
+    result = validator.validate(verbose=True)
+
+    # then
+    assert result, "Validation should pass"
+    assert len(validator.graph.nodes) == 1, "Graph should contain only one revision"
+    assert "Only one migration detected. Skipping orphan check." in caplog.text

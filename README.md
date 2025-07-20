@@ -2,8 +2,8 @@
 <p align="center">
 <a href="https://github.com/maekind/pylembic"><img src="https://img.shields.io/github/actions/workflow/status/maekind/pylembic/.github%2Fworkflows%2Ftesting.yaml?label=tests&color=green" hspace="5"></a>
 <a href="https://codecov.io/gh/maekind/pylembic"><img src="https://codecov.io/gh/maekind/pylembic/graph/badge.svg?token=JcGna50uJL" hspace="5"/></a>
-<a href="https://github.com/maekind/pylembic/releases"><img src="https://img.shields.io/github/actions/workflow/status/maekind/pylembic/.github%2Fworkflows%2Frelease.yaml?label=build package&color=green" hspace="5"></a>
-<a href="https://pypi.org/project/pylembic"><img src="https://img.shields.io/github/v/release/maekind/pylembic?color=blue&label=pypi latest" hspace="5"></a>
+<a href="https://github.com/maekind/pylembic/releases"><img src="https://img.shields.io/github/actions/workflow/status/maekind/pylembic/.github%2Fworkflows%2Frelease.yaml?label=build%20package&color=green" hspace="5"></a>
+<a href="https://pypi.org/project/pylembic"><img src="https://img.shields.io/github/v/release/maekind/pylembic?color=blue&label=pypi" hspace="5"></a>
 <br>
 <a href="https://github.com/maekind/pylembic/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-orange.svg" hspace="5"></a>
 <a href="https://github.com/maekind/pylembic"><img src="https://img.shields.io/github/repo-size/maekind/pylembic?color=red" hspace="5"></a>
@@ -14,7 +14,7 @@
 
 # pylembic
 
-## Description
+## 📝 Overview
 
 This package provides validation of Alembic migrations for Python projects.
 
@@ -30,7 +30,7 @@ to any other migration.
 - Graph visualization: Provides a visual way to catch anomalies and understand the
 migration flow.
 
-## Installation
+## 📦 Installation
 
 You can install this package using pip:
 
@@ -38,9 +38,9 @@ You can install this package using pip:
 pip install pylembic
 ```
 
-## Usage
+## ⚙️ Usage
 
-### Testing
+### 🧪 Testing
 
 You can use this module with your preferred testing framework as follows:
 
@@ -67,7 +67,7 @@ def test_migrations(with_alembic_config_path):
     assert migration_validator.validate()
 ```
 
-### Visualizing the migration graph
+### 📊 Visualizing the migration graph
 
 You can show the migrations graph by calling the method `show_graph`:
 
@@ -84,7 +84,7 @@ migration_validator = Validator(alembic_config_path)
 migration_validator.show_graph()
 ```
 
-### Command line interface
+### 💻 Command line interface
 
 You can also use the command line for:
 
@@ -120,15 +120,17 @@ CLI is implemented using `typer`, so you can use the `--help` flag to get more i
     pylembic validate --help
     ```
 
-#### Caveats
+#### ⚠️ Caveats
 
-##### Using project imports in migrations
+##### 📦 Using project imports in migrations
 
 When you are using the command line interface to validate the migrations and you have specific imports from your project in the migrations,
 you will probably need to add the path to your project to the `PYTHONPATH` environment variable.
 Otherwise, the command line interface will not be able to find the modules.
 
-## Contributors
+## 🤝 Contributors
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 <a href="https://github.com/maekind/pylembic/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=maekind/pylembic" />
@@ -136,4 +138,6 @@ Otherwise, the command line interface will not be able to find the modules.
 <br/>
 <br/>
 
-(c) <a href="mailto:marco@marcoespinosa.com">Marco Espinosa</a>, 2024
+## 📧 Contact
+
+(c) 2025, Created with ❤️ by [Marco Espinosa](mailto:marco@marcoespinosa.com)

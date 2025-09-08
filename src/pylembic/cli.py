@@ -56,7 +56,11 @@ def show_graph(
     validator = Validator(migrations_path)
 
     typer.echo("Visualizing migration graph...")
-    validator.show_graph()
+    try:
+        validator.show_graph()
+    except ImportError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED)
+        raise typer.Exit(1) from exc
 
 
 if __name__ == "__main__":

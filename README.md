@@ -32,11 +32,30 @@ migration flow.
 
 ## 📦 Installation
 
-You can install this package using pip:
+You can install this package using pip with different feature sets:
+
+### Standard Installation (Validation Only)
+For basic migration validation without graph visualization:
+
+```bash
+pip install pylembic[standard]
+```
+
+### Full Installation (All Features)
+For complete functionality including graph visualization:
+
+```bash
+pip install pylembic[all]
+```
+
+### Basic Installation
+You can also install the basic package without optional dependencies:
 
 ```bash
 pip install pylembic
 ```
+
+**Note:** The `show_graph` functionality requires the `[all]` installation option as it depends on `matplotlib`. The core validation features (including branch detection) work with all installation options as they use `networkx` which is included by default.
 
 ## ⚙️ Usage
 

@@ -1,7 +1,14 @@
 from os import path
 
-import matplotlib.pyplot as plt
 import networkx as nx
+
+try:
+    import matplotlib.pyplot as plt
+
+    HAS_MATPLOTLIB = True
+except ImportError:
+    HAS_MATPLOTLIB = False
+
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 from alembic.util import CommandError
@@ -183,6 +190,12 @@ class Validator:
         """
         Visualizes the migration dependency graph.
         """
+        if not HAS_MATPLOTLIB:
+            raise ImportError(
+                "Graph visualization requires matplotlib. "
+                "Install with 'pip install pylembic[all]' to enable this feature."
+            )
+
         plt.figure(figsize=(12, 8))
         pos = nx.spring_layout(self.graph)
         labels = {node: f"{node[:8]}" for node in self.graph.nodes}  # Short revision ID
